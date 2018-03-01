@@ -9,7 +9,7 @@ import PbplusCognitoSdk from '../../../src/index.js';
 import App from './App.react.js';
 
 const reducer = combineReducers({
-    auth: PbplusCognitoSdk.Reducer,
+    pbplusCognitoSdk: PbplusCognitoSdk.Reducer,
 })
 const store = createStore(
     reducer,
@@ -22,13 +22,15 @@ const store = createStore(
     },
     applyMiddleware(ReduxThunk)
 );
+store.dispatch(PbplusCognitoSdk.Actions.fetchAuthState());
 
 const ConnectedApp = connect(
     (state, ownProps) => {
-        const { endpoint, accessToken } = state.auth;
+        console.log(state.pbplusCognitoSdk);
+        const { loginEndpoint, accessToken } = state.pbplusCognitoSdk;
         return {
-            loginEndpoint: endpoint,
             isUserLoggedIn: !!accessToken,
+            loginEndpoint,
         };
     }
 )(App);

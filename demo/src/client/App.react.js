@@ -7,7 +7,7 @@ class App extends React.Component {
         const { loginEndpoint, isUserLoggedIn } = this.props;
         return <div className='app'>
             <div>You are {!isUserLoggedIn && <span>not</span>} logged in.</div>
-            <div>Click <a href={loginEndpoint} title='login'>here</a> to login.</div>
+            {!isUserLoggedIn && <div>Click <a href={loginEndpoint} title='login'>here</a> to login.</div>}
         </div>;
     }
 }
