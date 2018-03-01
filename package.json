@@ -1,0 +1,25 @@
+{
+  "name": "pbplus-cognito-sdk",
+  "version": "0.1.0",
+  "description": "AWS Cognito login flow sdk for PBPlus.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bill42362/pbplus-cognito-sdk.git"
+  },
+  "keywords": [
+    "pbplus",
+    "aws",
+    "cognito",
+    "redux"
+  ],
+  "author": "Pi-Yin Hsiao",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bill42362/pbplus-cognito-sdk/issues"
+  },
+  "homepage": "https://github.com/bill42362/pbplus-cognito-sdk#readme"
+}

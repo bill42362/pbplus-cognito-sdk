@@ -1,0 +1,14 @@
+# package directories
+node_modules
+jspm_packages
+
+.coverage
+*.swp
+*.log
+*.DS_Store
+*backup*
+*config.json
+config.json
+!default.config.json
+cover/
+dist/
