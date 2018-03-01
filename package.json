@@ -1,6 +1,6 @@
 {
   "name": "pbplus-cognito-sdk",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "AWS Cognito login flow sdk for PBPlus.",
   "main": "dist/index.js",
   "scripts": {
