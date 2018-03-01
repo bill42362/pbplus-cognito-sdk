@@ -141,7 +141,7 @@ const fetchAuthState = () => (dispatch, getState) => {
     const loginEndpoint = `${oauthUrl}/login?response_type=code&client_id=${clientId}&redirect_uri=${location.origin}`;
     const logoutEndpoint = `${oauthUrl}/logout?client_id=${clientId}&logout_uri=${location.origin}`;
     return dispatch(updateEndpoints({ loginEndpoint, logoutEndpoint }))
-        .then(dispatch(fetchAccessToken()));
+        .then(() => dispatch(fetchAccessToken()));
 };
 
 const logout = () => (dispatch, getState) => {
