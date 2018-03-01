@@ -7,6 +7,7 @@ const isProd = 'production' === process.env.NODE_ENV;
 const CODE_KEY = 'code';
 const COOKIE_REFRESH_TOKEN_KEY = 'pbplus_backstage_refresh_token';
 const MSECS_IN_SIX_DAYS = 6*24*3600*1000;
+const SECS_FOR_REFRESH_ACCESS_TOKEN_BEFORE_EXPIRE = 600;
 let refreshToken = getCookieByName({name: COOKIE_REFRESH_TOKEN_KEY});
 
 const getTokensByAccessCode = ({ code, clientId, oauthUrl, oauthSecret }) => {
@@ -106,19 +107,22 @@ const fetchAccessToken = () => (dispatch, getState) => {
     const { oauthUrl, clientId, oauthSecret } = getState().pbplusCognitoSdk;
     const urlSearches = getUrlSearches();
     const accessCodeFromSearch = urlSearches[CODE_KEY];
-    delete urlSearches[CODE_KEY];
-    const newSearchString = makeSearchString(urlSearches);
-    window.history.replaceState('', '', `${location.pathname}${newSearchString ? '?' : ''}${newSearchString}`);
     if(accessCodeFromSearch) {
+        delete urlSearches[CODE_KEY];
+        const newSearchString = makeSearchString(urlSearches);
+        window.history.replaceState('', '', `${location.pathname}${newSearchString ? '?' : ''}${newSearchString}`);
         return getTokensByAccessCode({code: accessCodeFromSearch, clientId, oauthUrl, oauthSecret })
         .then(response => {
+            refreshToken = response.refreshToken;
             saveCookieByName({
                 name: COOKIE_REFRESH_TOKEN_KEY,
                 data: response.refreshToken,
                 domain: isProd ? '.pbplus.me' : undefined,
                 expireDate: new Date(Date.now() + MSECS_IN_SIX_DAYS),
             });
-            refreshToken = response.refreshToken;
+            refreshAccessTokenTimeout = window.setTimeout(() => {
+                dispatch(fetchAccessToken());
+            }, (response.expiresIn - SECS_FOR_REFRESH_ACCESS_TOKEN_BEFORE_EXPIRE)*1000);
             return dispatch(updateAccessToken({accessToken: response.accessToken}));
         });
     } else if(refreshToken) {
@@ -126,7 +130,7 @@ const fetchAccessToken = () => (dispatch, getState) => {
         .then(response => {
             refreshAccessTokenTimeout = window.setTimeout(() => {
                 dispatch(fetchAccessToken());
-            }, (response.expiresIn - 600)*1000);
+            }, (response.expiresIn - SECS_FOR_REFRESH_ACCESS_TOKEN_BEFORE_EXPIRE)*1000);
             return dispatch(updateAccessToken({accessToken: response.accessToken}));
         });
     }
