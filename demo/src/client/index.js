@@ -26,13 +26,16 @@ store.dispatch(PbplusCognitoSdk.Actions.fetchAuthState());
 
 const ConnectedApp = connect(
     (state, ownProps) => {
-        console.log(state.pbplusCognitoSdk);
-        const { loginEndpoint, accessToken } = state.pbplusCognitoSdk;
+        const { loginEndpoint, logoutEndpoint, accessToken } = state.pbplusCognitoSdk;
         return {
             isUserLoggedIn: !!accessToken,
             loginEndpoint,
+            logoutEndpoint,
         };
-    }
+    },
+    (dispatch, ownProps) => { return {
+        logout: () => dispatch(PbplusCognitoSdk.Actions.logout()),
+    }; }
 )(App);
 
 ReactDOM.render(

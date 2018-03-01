@@ -87,10 +87,10 @@ const Reducer = (state = defaultState, action) => {
     }
 }
 
-const updateLoginEndpoint = ({ loginEndpoint }) => { return (dispatch, getState) => {
+const updateEndpoints = ({ loginEndpoint, logoutEndpoint }) => { return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
-        dispatch({type: 'UPDATE_AUTH_LOGIN_ENDPOINT', payload: { loginEndpoint }});
-        resolve({ loginEndpoint });
+        dispatch({type: 'UPDATE_AUTH_LOGIN_ENDPOINT', payload: { loginEndpoint, logoutEndpoint }});
+        resolve({ loginEndpoint, logoutEndpoint });
     });
 }; };
 
@@ -139,10 +139,23 @@ const fetchAccessToken = () => (dispatch, getState) => {
 const fetchAuthState = () => (dispatch, getState) => {
     const { oauthUrl, clientId } = getState().pbplusCognitoSdk;
     const loginEndpoint = `${oauthUrl}/login?response_type=code&client_id=${clientId}&redirect_uri=${location.origin}`;
-    return dispatch(updateLoginEndpoint({ loginEndpoint }))
+    const logoutEndpoint = `${oauthUrl}/logout?client_id=${clientId}&logout_uri=${location.origin}`;
+    return dispatch(updateEndpoints({ loginEndpoint, logoutEndpoint }))
         .then(dispatch(fetchAccessToken()));
 };
 
-const Actions = { fetchAuthState };
+const logout = () => (dispatch, getState) => {
+    refreshToken = undefined;
+    clearTimeout(refreshAccessTokenTimeout);
+    saveCookieByName({
+        name: COOKIE_REFRESH_TOKEN_KEY,
+        data: '',
+        domain: isProd ? '.pbplus.me' : undefined,
+        expireDate: new Date(Date.now()),
+    });
+    return dispatch(updateAccessToken({accessToken: ''}));
+};
+
+const Actions = { fetchAuthState, logout };
 
 export default { Reducer, Actions };
