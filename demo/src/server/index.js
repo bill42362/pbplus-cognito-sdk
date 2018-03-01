@@ -15,7 +15,7 @@ const renderApp = `
         </head>
         <body>
             <div id="app-root"></div>
-            <script type='text/javascript' src="${isProd ? `/js/bundle.js` : `http://localhost:7000/js/bundle.js`}" ></script>
+            <script type='text/javascript' src="${isProd ? `/js/bundle.js` : `http://localhost:7000/bundle.js`}" ></script>
         </body>
     </html>
 `;

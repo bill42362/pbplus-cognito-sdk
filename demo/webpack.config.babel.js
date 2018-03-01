@@ -24,6 +24,7 @@ export default {
             { test: /\.(js|jsx)$/, use: 'babel-loader', exclude: /node_modules/ },
         ]
     },
+    mode: isProd ? 'production' : 'development',
     plugins: plugins,
     devtool: isProd ? false : 'source-map',
     resolve: {
