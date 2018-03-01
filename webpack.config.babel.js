@@ -11,6 +11,7 @@ export default {
     output: {
         filename: '[name].js',
         path: `${__dirname}/dist/`,
+        libraryTarget: 'commonjs2',
     },
     module: {
         rules: [
