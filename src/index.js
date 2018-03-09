@@ -104,7 +104,7 @@ const updateAccessToken = ({ accessToken }) => { return (dispatch, getState) => 
 let refreshAccessTokenTimeout = undefined;
 
 const fetchAccessToken = () => (dispatch, getState) => {
-    const { oauthUrl, clientId, oauthSecret } = getState().pbplusCognitoSdk;
+    const { oauthUrl, clientId, oauthSecret, cookieDomain } = getState().pbplusCognitoSdk;
     const urlSearches = getUrlSearches();
     const accessCodeFromSearch = urlSearches[CODE_KEY];
     if(accessCodeFromSearch) {
@@ -117,7 +117,7 @@ const fetchAccessToken = () => (dispatch, getState) => {
             saveCookieByName({
                 name: COOKIE_REFRESH_TOKEN_KEY,
                 data: response.refreshToken,
-                domain: isProd ? '.pbplus.me' : undefined,
+                domain: cookieDomain,
                 expireDate: new Date(Date.now() + MSECS_IN_SIX_DAYS),
             });
             refreshAccessTokenTimeout = window.setTimeout(() => {
@@ -145,12 +145,13 @@ const fetchAuthState = () => (dispatch, getState) => {
 };
 
 const logout = () => (dispatch, getState) => {
+    const { cookieDomain } = getState().pbplusCognitoSdk;
     refreshToken = undefined;
     clearTimeout(refreshAccessTokenTimeout);
     saveCookieByName({
         name: COOKIE_REFRESH_TOKEN_KEY,
         data: '',
-        domain: isProd ? '.pbplus.me' : undefined,
+        domain: cookieDomain,
         expireDate: new Date(Date.now()),
     });
     return dispatch(updateAccessToken({accessToken: ''}));
