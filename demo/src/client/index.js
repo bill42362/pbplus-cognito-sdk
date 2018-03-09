@@ -18,6 +18,7 @@ const store = createStore(
             oauthUrl: process.env.OAUTH_URL,
             oauthSecret: process.env.OAUTH_SECRET,
             clientId: process.env.CLIENT_ID,
+            cookieDomain: process.env.COOKIE_DOMAIN,
         }
     },
     applyMiddleware(ReduxThunk)

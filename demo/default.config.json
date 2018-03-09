@@ -2,5 +2,6 @@
     "NODE_ENV": "develop",
     "OAUTH_URL": "https://[YOUR_DOMAIN].auth.[YOUR_RIGION].amazoncognito.com",
     "OAUTH_SECRET": "{Base64Encode(CLIENT_ID:CLIENT_SECRET)}",
-    "CLIENT_ID": "[YOUT_CLIENT_ID]"
+    "CLIENT_ID": "[YOUT_CLIENT_ID]",
+    "COOKIE_DOMAIN": "[YOUR_WEBSITE_DOMAIN]"
 }
