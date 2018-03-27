@@ -150,9 +150,10 @@ const logout = () => (dispatch, getState) => {
     clearTimeout(refreshAccessTokenTimeout);
     saveCookieByName({
         name: COOKIE_REFRESH_TOKEN_KEY,
-        data: '',
+        data: Math.random(),
         domain: cookieDomain,
-        expireDate: new Date(Date.now()),
+        expireDate: new Date(0),
+        maxAge: -99999999,
     });
     return dispatch(updateAccessToken({accessToken: ''}));
 };
