@@ -88,10 +88,11 @@ export const decryptString = ({ string, salt = DEFAULT_CIPHER_SALT }) => {
     return result;
 }
 
-export const saveCookieByName = ({ name, data, expireDate, domain, path }) => {
+export const saveCookieByName = ({ name, data, expireDate, maxAge, domain, path }) => {
     var dataString = JSON.stringify(data);
     var cookie = name + '=' + encryptString({string: dataString});
-    if(expireDate) { cookie += "; expires=" + expireDate.toGMTString(); }
+    if(expireDate) { cookie += "; expires=" + expireDate.toUTCString(); }
+    if(maxAge) { cookie += "; Max-Age=" + maxAge; }
     if(domain) { cookie += "; domain=" + domain; }
     if(path) { cookie += "; path=" + path; }
     document.cookie = cookie;
