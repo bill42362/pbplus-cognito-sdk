@@ -119,6 +119,7 @@ const fetchAccessToken = () => (dispatch, getState) => {
                 data: response.refreshToken,
                 domain: cookieDomain,
                 expireDate: new Date(Date.now() + MSECS_IN_SIX_DAYS),
+                path: '/',
             });
             refreshAccessTokenTimeout = window.setTimeout(() => {
                 dispatch(fetchAccessToken());
@@ -154,6 +155,7 @@ const logout = () => (dispatch, getState) => {
         domain: cookieDomain,
         expireDate: new Date(0),
         maxAge: -99999999,
+        path: '/',
     });
     return dispatch(updateAccessToken({accessToken: ''}));
 };
