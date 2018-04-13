@@ -39,6 +39,12 @@ const getTokensByAccessCode = ({ code, clientId, oauthUrl, oauthSecret }) => {
     })
     .catch(error => {
         console.log('getTokensByAccessCode() error:', error);
+        return {
+            idToken: '',
+            accessToken: '',
+            refreshToken: '',
+            expiresIn: 3600,
+        };
     });
 };
 
@@ -69,6 +75,11 @@ const getAccessTokenByRefreshToken = ({ refreshToken, clientId, oauthUrl, oauthS
     })
     .catch(error => {
         console.log('getAccessTokenByRefreshToken() error:', error);
+        return {
+            idToken: '',
+            accessToken: '',
+            expiresIn: 3600,
+        };
     });
 };
 
